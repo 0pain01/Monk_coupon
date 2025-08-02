@@ -80,29 +80,228 @@ A Spring Boot-based RESTful service to manage and apply different types of coupo
 
 ```bash
 mvn clean install
-
-mvn clean install
 ```
+
 Run locally:
 ```bash
 mvn spring-boot:run
 ```
+
 ## 📁 API Endpoints (Examples)
 ```http
 POST /coupons - Create a coupon
 ```
+Request:
+
+```json
+{
+  "type": "CART_WISE",
+  "name": "10% Off Above 300",
+  "description": "10% off if total > 300",
+  "active": true,
+  "expiresAt": "2025-12-01T23:59:59",
+  "details": {
+    "threshold": 300,
+    "discount": 10
+  }
+}
+```
+```json
+{
+  "type": "PRODUCT_WISE",
+  "name": "20% off Product A",
+  "description": "Flat 20% off",
+  "active": true,
+  "expiresAt": "2025-12-01T23:59:59",
+  "details": {
+    "product_id": 1,
+    "discount": 20
+  }
+}
+```
+```json
+{
+  "name": "Buy 2 Get 1 Free",
+  "description": "Buy 6 of  [1,2] get 2 of [3] free",
+  "type": "BXGY",
+  "active": true,
+  "expiresAt": "2025-12-31T23:59:59",
+  "details": {
+    "repetition_limit": 2,
+    "buy_products": [
+      { "product_id": 1, "quantity": 3 },
+      { "product_id": 2, "quantity": 3 }
+    ],
+    "get_products": [
+      { "product_id": 3, "quantity": 1 }
+    ]
+  }
+}
+```
 ```http
 GET /coupons - List all coupons
+```
+Response:
+```json
+[
+    {
+        "type": "PRODUCT_WISE",
+        "name": "20% off Product A",
+        "description": "Flat 20% off",
+        "expiresAt": "2025-12-31T23:59:59",
+        "active": true,
+        "productId": 1,
+        "discountPercentage": 20,
+        "id": 1
+    },
+    {
+        "type": "BXGY",
+        "name": "Buy 2 X(3) Get Y(2) Free",
+        "description": "Buy 6 of  [1,2] get 2 of [3] free",
+        "expiresAt": "2025-12-31T23:59:59",
+        "active": true,
+        "repetitionLimit": 2,
+        "buyProducts": [
+            {
+                "id": 4,
+                "productId": 1,
+                "quantityRequired": 3
+            },
+            {
+                "id": 5,
+                "productId": 2,
+                "quantityRequired": 3
+            }
+        ],
+        "getProducts": [
+            {
+                "id": 6,
+                "productId": 3,
+                "quantityFree": 1
+            }
+        ],
+        "id": 2
+    },
+    {
+        "type": "CART_WISE",
+        "name": "10% Off Above 300",
+        "description": "10% off if total > 300",
+        "expiresAt": "2025-12-01T23:59:59",
+        "active": true,
+        "threshold": 300.00,
+        "discountPercentage": 10,
+        "id": 3
+    }
+]
 ```
 ```http
 GET /coupons/{id} - Fetch a coupon by ID
 ```
+Response:
+```http
+GET  http://localhost:8080/coupons/1
+```
+```json
+{
+        "type": "CART_WISE",
+        "name": "10% Off Above 300",
+        "description": "10% off if total > 300",
+        "expiresAt": "2025-12-01T23:59:59",
+        "active": true,
+        "threshold": 300.00,
+        "discountPercentage": 10,
+        "id": 3
+    }
+```
+
 ```http
 POST /coupons/applicable-coupons - Get applicable coupons for a cart
+```
+Request:
+```json
+{
+  "cart": {
+    "items": [
+      { "product_id": 1, "quantity": 6, "price": 50 },
+      { "product_id": 2, "quantity": 3, "price": 30 },
+      { "product_id": 3, "quantity": 2, "price": 25 }
+    ]
+  }
+}
+```
+Response:
+```json
+{
+    "applicable_coupons": [
+        {
+            "coupon_id": 2,
+            "type": "product-wise",
+            "discount": 60
+        },
+        {
+            "coupon_id": 8,
+            "type": "bxgy",
+            "discount": 50
+        },
+        {
+            "coupon_id": 9,
+            "type": "cart-wise",
+            "discount": 44.00
+        }
+    ]
+}
 ```
 ```http
 POST /coupons/apply-coupon/{id} - Apply a specific coupon to a cart
 ```
+Request:
+```json
+{
+  "cart": {
+    "items": [
+      { "product_id": 1, "quantity": 6, "price": 50 },
+      { "product_id": 2, "quantity": 3, "price": 30 },
+      { "product_id": 3, "quantity": 2, "price": 25 }
+    ]
+  }
+}
+```
+Response:
+```json
+{
+    "updated_cart": {
+        "items": [
+            {
+                "product_id": 1,
+                "quantity": 6,
+                "price": 50,
+                "total_discount": 60.00
+            },
+            {
+                "product_id": 2,
+                "quantity": 3,
+                "price": 30,
+                "total_discount": 0
+            },
+            {
+                "product_id": 3,
+                "quantity": 2,
+                "price": 25,
+                "total_discount": 0
+            }
+        ],
+        "total_price": 440.00,
+        "total_discount": 60.00,
+        "final_price": 380.00
+    }
+}
+```
 ```http
 DELETE /coupons/{id} - Delete a coupon
+```
+response:
+```json
+{
+    "message": "Deleted coupon: 10% Off Above 300 (ID: 9)"
+}
 ```
