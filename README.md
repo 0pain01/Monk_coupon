@@ -88,9 +88,9 @@ mvn spring-boot:run
 ```
 
 ## 📁 API Endpoints (Examples)
-```http
-POST /coupons - Create a coupon
-```
+
+1. POST /coupons - Create a coupon
+
 Request:
 
 ```json
@@ -138,9 +138,9 @@ Request:
   }
 }
 ```
-```http
-GET /coupons - List all coupons
-```
+
+2. GET /coupons - List all coupons
+
 Response:
 ```json
 [
@@ -194,9 +194,9 @@ Response:
     }
 ]
 ```
-```http
-GET /coupons/{id} - Fetch a coupon by ID
-```
+
+3.  GET /coupons/{id} - Fetch a coupon by ID
+
 Response:
 ```http
 GET  http://localhost:8080/coupons/1
@@ -214,9 +214,9 @@ GET  http://localhost:8080/coupons/1
     }
 ```
 
-```http
-POST /coupons/applicable-coupons - Get applicable coupons for a cart
-```
+
+4. POST /coupons/applicable-coupons - Get applicable coupons for a cart
+
 Request:
 ```json
 {
@@ -251,9 +251,9 @@ Response:
     ]
 }
 ```
-```http
-POST /coupons/apply-coupon/{id} - Apply a specific coupon to a cart
-```
+
+5. POST /coupons/apply-coupon/{id} - Apply a specific coupon to a cart
+
 Request:
 ```json
 {
@@ -296,9 +296,9 @@ Response:
     }
 }
 ```
-```http
-DELETE /coupons/{id} - Delete a coupon
-```
+
+6. DELETE /coupons/{id} - Delete a coupon
+
 response:
 ```json
 {
