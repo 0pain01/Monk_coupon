@@ -49,6 +49,9 @@ A Spring Boot-based RESTful service to manage and apply different types of coupo
 | Stackable Coupons     | Complexity in combining discounts logically |
 | Category-Based Coupons| Lack of product category model              |
 | Region/User-Specific Coupons | No user or region context in current setup |
+| User-Specific Coupons | Requires user authentication, user accounts, and user-coupon mappings |
+| Scheduled Coupons | Coupons valid only between certain hours or days (e.g., flash sales) would require additional scheduling logic.|
+| Auto-Apply Best Coupon | Adds performance and fairness challenges; currently, only explicit coupon application is supported.|
 
 ---
 
@@ -59,6 +62,8 @@ A Spring Boot-based RESTful service to manage and apply different types of coupo
 - BxGy free items must exist in the cart to calculate discount.
 - Product prices are provided directly in cart request (no central product DB).
 - No authentication/authorization in place.
+- No tracking of coupon usage, frequency, or effectiveness for audit/analytics.
+- Different coupon types use hardcoded fields rather than a flexible metadata or rules engine.
 
 ---
 
