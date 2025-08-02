@@ -260,7 +260,7 @@ Response:
 
 5. POST /coupons/apply-coupon/{id} - Apply a specific coupon to a cart
 ```http
-POST  http://localhost:8080/coupons/applyc-coupon/1
+POST  http://localhost:8080/coupons/apply-coupon/1
 ```
 Request:
 ```json
