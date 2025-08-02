@@ -90,7 +90,9 @@ mvn spring-boot:run
 ## 📁 API Endpoints (Examples)
 
 1. POST /coupons - Create a coupon
-
+```http
+POST  http://localhost:8080/coupons
+```
 Request:
 
 ```json
@@ -140,7 +142,9 @@ Request:
 ```
 
 2. GET /coupons - List all coupons
-
+```http
+GET  http://localhost:8080/coupons
+```
 Response:
 ```json
 [
@@ -216,7 +220,9 @@ GET  http://localhost:8080/coupons/1
 
 
 4. POST /coupons/applicable-coupons - Get applicable coupons for a cart
-
+```http
+POST  http://localhost:8080/coupons/applicable-coupons
+```
 Request:
 ```json
 {
@@ -253,7 +259,9 @@ Response:
 ```
 
 5. POST /coupons/apply-coupon/{id} - Apply a specific coupon to a cart
-
+```http
+POST  http://localhost:8080/coupons/applyc-coupon/1
+```
 Request:
 ```json
 {
@@ -298,10 +306,30 @@ Response:
 ```
 
 6. DELETE /coupons/{id} - Delete a coupon
-
+```http
+DELETE  http://localhost:8080/coupons/1
+```
 response:
 ```json
 {
     "message": "Deleted coupon: 10% Off Above 300 (ID: 9)"
 }
+```
+
+7. PUT /coupons/{id} - Update a coupon
+request:
+```http
+PUT  http://localhost:8080/coupons/1
+```
+```json
+{
+        "type": "CART_WISE",
+        "name": "20% Off Above 300",
+        "description": "20% off if total > 300",
+        "expiresAt": "2025-12-01T23:59:59",
+        "active": true,
+        "threshold": 300.00,
+        "discountPercentage": 20,
+        "id": 3
+    }
 ```
